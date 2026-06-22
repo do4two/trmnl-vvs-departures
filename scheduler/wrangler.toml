@@ -1,0 +1,26 @@
+name = "vvs-geradstetten-trmnl"
+main = "worker.js"
+compatibility_date = "2026-06-01"
+
+# Kein öffentlicher HTTP-Endpoint nötig – der Worker arbeitet rein über den
+# Cron-Trigger. Spart die workers.dev-Subdomain-Registrierung.
+# (Für die manuelle ?force=1-Test-URL: auf true setzen + Subdomain registrieren.)
+workers_dev = false
+
+# Cron feuert alle 6 Min, täglich (Mo–So), 04:00–07:59 UTC.
+# (6 statt 5 Min = max. 10 Pushes/Std → sicherer Abstand zum Webhook-Limit von
+#  12/Std auf Standard-Accounts. Für exakt 5 Min: "*/5 4-7 * * *" + TRMNL+.)
+# Das deckt das Berliner Fenster 06:00–08:00 in BEIDEN Zeitzonen ab:
+#   Sommer (CEST, UTC+2): 04:00–06:00 UTC
+#   Winter (CET,  UTC+1): 05:00–07:00 UTC
+# Die exakte Eingrenzung auf 06:00–08:00 Europe/Berlin macht der Worker selbst
+# (DST-sicher). Feuerungen außerhalb des Fensters beenden sich sofort ohne Push.
+[triggers]
+crons = ["*/6 4-7 * * *"]
+
+# Optional: EFA-URL hier überschreiben (sonst Default im Worker).
+# [vars]
+# EFA_URL = "https://www3.vvs.de/vvs/widget/XML_DM_REQUEST?...&name_dm=5001702&useRealtime=1..."
+
+# TRMNL_WEBHOOK_URL wird als Secret gesetzt:
+#   wrangler secret put TRMNL_WEBHOOK_URL

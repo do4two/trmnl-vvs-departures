@@ -1,0 +1,43 @@
+<div class="view view--half_vertical">
+  <div class="layout">
+
+    {% if departure_count == 0 %}
+      <div class="layout layout--center">
+        <span class="value">Keine Abfahrten</span>
+      </div>
+    {% else %}
+      <div class="flex flex--col gap--small">
+        {% for d in departures limit: 6 %}
+          <div class="item">
+            <div class="meta"></div>
+            <div class="content">
+              <div class="flex justify--between items--center">
+                <span class="value value--xsmall value--tnums">{{ d.line }}</span>
+                <span class="label value--tnums">{{ d.planned }}</span>
+              </div>
+              <span class="label label--small">{{ d.destination | truncate: 24 }}</span>
+              <span class="label label--small">
+                {% if d.status == 'cancelled' %}
+                  Ausfall
+                {% elsif d.status == 'late' %}
+                  <span class="value value--xsmall value--tnums">{{ d.delay_label }} → {{ d.real }}</span> · {{ d.platform | remove: 'Gleis ' | prepend: 'Gl. ' }}
+                {% elsif d.status == 'ontime' %}
+                  <span class="text--gray-50">pünktlich</span> · {{ d.platform | remove: 'Gleis ' | prepend: 'Gl. ' }}
+                {% else %}
+                  <span class="text--gray-50">{{ d.platform | remove: 'Gleis ' | prepend: 'Gl. ' }}</span>
+                {% endif %}
+              </span>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+  </div>
+
+  <div class="title_bar">
+    <img class="image" src="https://usetrmnl.com/images/plugins/trmnl--render.svg">
+    <span class="title">{{ stop_name }}</span>
+    <span class="instance">{{ updated_at }}</span>
+  </div>
+</div>

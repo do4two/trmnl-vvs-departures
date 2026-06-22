@@ -1,0 +1,62 @@
+<div class="view view--full">
+  <div class="layout">
+
+    {% if departure_count == 0 %}
+      <div class="layout layout--center">
+        <span class="value value--large">Keine Abfahrten</span>
+        <span class="label label--small">Betriebspause / keine Echtzeitdaten</span>
+      </div>
+    {% else %}
+      <table class="table">
+        <thead>
+          <tr>
+            <th><span class="title title--small">Linie</span></th>
+            <th><span class="title title--small">Ziel</span></th>
+            <th><span class="title title--small">Ab</span></th>
+            <th><span class="title title--small">Echtzeit</span></th>
+            <th><span class="title title--small">Gleis</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for d in departures limit: 6 %}
+            <tr>
+              <td><span class="value value--xsmall value--tnums">{{ d.line }}</span></td>
+              <td><span class="label">{{ d.destination }}</span></td>
+              <td><span class="label value--tnums">{{ d.planned }}</span></td>
+              <td>
+                {% if d.status == 'cancelled' %}
+                  <span class="value value--xsmall">Ausfall</span>
+                {% elsif d.status == 'late' %}
+                  <span class="value value--xsmall value--tnums">{{ d.delay_label }} → {{ d.real }}</span>
+                {% elsif d.status == 'ontime' %}
+                  <span class="label label--small text--gray-50">pünktlich</span>
+                {% else %}
+                  <span class="label label--small text--gray-50">—</span>
+                {% endif %}
+              </td>
+              <td><span class="label label--small value--tnums">{{ d.platform | remove: 'Gleis ' | prepend: 'Gl. ' }}</span></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      {% if disruptions.size > 0 %}
+        <div class="b-h-2 b--black mt-2 pt-1">
+          {% for msg in disruptions limit: 2 %}
+            <div class="flex gap--small items--center">
+              <span class="label label--small">⚠</span>
+              <span class="label label--small">{{ msg }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endif %}
+
+  </div>
+
+  <div class="title_bar">
+    <img class="image" src="https://usetrmnl.com/images/plugins/trmnl--render.svg">
+    <span class="title">VVS · {{ stop_name }}</span>
+    <span class="instance">Stand {{ updated_at }}</span>
+  </div>
+</div>

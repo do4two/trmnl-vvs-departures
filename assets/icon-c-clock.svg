@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#ffffff"/>
+  <!-- S-Bahn-Triebkopf (stilisiert) -->
+  <g>
+    <rect x="96" y="120" width="320" height="232" rx="80" fill="#000000"/>
+    <!-- Frontscheibe -->
+    <rect x="146" y="166" width="220" height="92" rx="34" fill="#ffffff"/>
+    <text x="256" y="236" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
+          font-weight="800" font-size="66" fill="#000000">S2</text>
+    <!-- Scheinwerfer -->
+    <circle cx="150" cy="312" r="22" fill="#ffffff"/>
+    <circle cx="362" cy="312" r="22" fill="#ffffff"/>
+  </g>
+  <!-- Schienen -->
+  <rect x="120" y="372" width="272" height="12" rx="6" fill="#000000" opacity="0.85"/>
+  <rect x="150" y="396" width="212" height="12" rx="6" fill="#000000" opacity="0.5"/>
+  <!-- Verspätungs-Uhr -->
+  <circle cx="404" cy="116" r="80" fill="#ffffff" stroke="#000000" stroke-width="14"/>
+  <line x1="404" y1="116" x2="404" y2="66" stroke="#000000" stroke-width="12" stroke-linecap="round"/>
+  <line x1="404" y1="116" x2="442" y2="132" stroke="#000000" stroke-width="12" stroke-linecap="round"/>
+  <text x="404" y="178" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
+        font-weight="800" font-size="40" fill="#000000">+3</text>
+</svg>

@@ -1,0 +1,12 @@
+{
+  "name": "trmnl-vvs-departures",
+  "version": "1.0.0",
+  "description": "TRMNL Private Plugin: VVS S-Bahn/Bus departures with real-time delays for any VVS stop",
+  "license": "MIT",
+  "scripts": {
+    "test": "node test/render_test.js"
+  },
+  "devDependencies": {
+    "liquidjs": "^10.27.0"
+  }
+}

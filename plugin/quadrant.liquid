@@ -1,0 +1,35 @@
+<div class="view view--quadrant">
+  <div class="layout">
+
+    {% if departure_count == 0 %}
+      <div class="layout layout--center">
+        <span class="label">Keine Abfahrten</span>
+      </div>
+    {% else %}
+      <div class="flex flex--col gap--small">
+        {% for d in departures limit: 3 %}
+          <div>
+            <div class="flex gap--small items--center">
+              <span class="value value--xsmall value--tnums">{{ d.line }}</span>
+              <span class="label label--small">{{ d.destination | truncate: 11, '' }}</span>
+            </div>
+            <span class="label label--small value--tnums">
+              {{ d.planned }}
+              {%- if d.status == 'late' %} → {{ d.real }} {{ d.delay_label }}
+              {%- elsif d.status == 'ontime' %} · pünktl.
+              {%- elsif d.status == 'cancelled' %} · Ausfall
+              {%- endif %}
+            </span>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+  </div>
+
+  <div class="title_bar">
+    <img class="image" src="https://usetrmnl.com/images/plugins/trmnl--render.svg">
+    <span class="title">{{ stop_name | split: ',' | last | split: '-' | last | strip }}</span>
+    <span class="instance">{{ updated_at }}</span>
+  </div>
+</div>

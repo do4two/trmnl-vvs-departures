@@ -1,0 +1,40 @@
+<div class="view view--half_horizontal">
+  <div class="layout">
+
+    {% if departure_count == 0 %}
+      <div class="layout layout--center">
+        <span class="value">Keine Abfahrten</span>
+      </div>
+    {% else %}
+      <table class="table table--condensed">
+        <tbody>
+          {% for d in departures limit: 4 %}
+            <tr>
+              <td><span class="value value--xsmall value--tnums">{{ d.line }}</span></td>
+              <td><span class="label">{{ d.destination | truncate: 22 }}</span></td>
+              <td><span class="label value--tnums">{{ d.planned }}</span></td>
+              <td>
+                {% if d.status == 'cancelled' %}
+                  <span class="value value--xsmall">Ausfall</span>
+                {% elsif d.status == 'late' %}
+                  <span class="value value--xsmall value--tnums">{{ d.delay_label }} → {{ d.real }}</span>
+                {% elsif d.status == 'ontime' %}
+                  <span class="label label--small text--gray-50">pünktl.</span>
+                {% else %}
+                  <span class="label label--small text--gray-50">—</span>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+
+  </div>
+
+  <div class="title_bar">
+    <img class="image" src="https://usetrmnl.com/images/plugins/trmnl--render.svg">
+    <span class="title">{{ stop_name }}</span>
+    <span class="instance">Stand {{ updated_at }}</span>
+  </div>
+</div>

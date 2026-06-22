@@ -1,0 +1,24 @@
+---
+name: VVS Abfahrten
+strategy: polling
+# 15 Min ist das kleinste TRMNL-Intervall und passt zum E-Ink-Refresh.
+refresh_interval: 15
+
+# Nutzer-Eingabe: Die Haltestellen-ID wird beim Installieren abgefragt und per
+# ##{{ stop_id }} in die Polling-URL eingesetzt (TRMNL "Dynamic Polling URL").
+# So funktioniert dasselbe Plugin für jede VVS-Haltestelle ohne Code-Änderung.
+custom_fields:
+  - keyname: stop_id
+    field_type: string
+    name: Haltestellen-ID (EFA stopID)
+    description: 'Numerische EFA-stopID deiner Haltestelle. Ermitteln über den <a href="https://www3.vvs.de/vvs/widget/XML_STOPFINDER_REQUEST?outputFormat=JSON&language=de&type_sf=any&name_sf=Stuttgart">STOPFINDER</a> – die ID steht in <code>stopFinder.points.point.ref.id</code>. Beispiel: Remshalden-Geradstetten = 5001702.'
+    placeholder: '5001702'
+
+# EFA Departure Monitor (Mentz/VVS) mit Echtzeit. name_dm = die gewählte stopID.
+# useRealtime=1 ist entscheidend fuer die Verspaetungsdaten.
+polling_url: 'https://www3.vvs.de/vvs/widget/XML_DM_REQUEST?outputFormat=JSON&language=de&type_dm=stop&name_dm=##{{ stop_id }}&useRealtime=1&mode=direct&limit=8&itdDateTimeDepArr=dep'
+polling_verb: GET
+polling_headers: 'user-agent=TRMNL-VVS-Plugin'
+
+no_screen_padding: 'no'
+dark_mode: 'no'
