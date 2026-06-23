@@ -9,3 +9,14 @@ scheduler/.wrangler/
 
 # OS
 .DS_Store
+
+# Lokale, private Notizen (nicht ins öffentliche Repo)
+github_issues.md
+
+# Lokale Test-Fotos & Diagnose-Notizen (render_test.js bleibt getrackt)
+test/*.PNG
+test/*.png
+test/*.HEIC
+test/*.heic
+test/*.jpg
+test/STATUS_HANDOFF.md

@@ -18,6 +18,12 @@ workers_dev = false
 [triggers]
 crons = ["*/6 4-7 * * *"]
 
+# Persistente Logs (Cloudflare Workers Logs), damit jeder Cron-Tick nachträglich
+# im Dashboard (Workers & Pages → vvs-geradstetten-trmnl → Logs) sichtbar ist –
+# auch außerhalb von `wrangler tail`. Für Diagnose der ausgelassenen Pushes.
+[observability]
+enabled = true
+
 # Optional: EFA-URL hier überschreiben (sonst Default im Worker).
 # [vars]
 # EFA_URL = "https://www3.vvs.de/vvs/widget/XML_DM_REQUEST?...&name_dm=5001702&useRealtime=1..."

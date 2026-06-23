@@ -49,6 +49,13 @@ function inWindow() {
   return WEEKDAYS.has(weekday) && minutes >= WINDOW_START && minutes < WINDOW_END;
 }
 
+/** "HH:MM" Berliner Wanduhr – für lesbare Log-Zeitstempel. */
+function berlinClock() {
+  const { minutes } = berlinNow();
+  const pad = (n) => ("0" + String(n)).slice(-2);
+  return pad(Math.floor(minutes / 60)) + ":" + pad(minutes % 60);
+}
+
 /** EFA-DM-JSON → flache, TRMNL-/Liquid-freundliche merge_variables.
  *  stopName überschreibt den Anzeigenamen (Var STOP_NAME); ohne Wert Default unten. */
 function transform(input, stopName) {
@@ -148,26 +155,37 @@ async function pushToTrmnl(env) {
     body,
   });
 
+  // Webhook-Antwortkörper bei Fehlern mitloggen (z.B. 429-Rate-Limit-Hinweis).
+  let detail = "";
+  if (!resp.ok) {
+    try {
+      detail = (await resp.text()).slice(0, 200);
+    } catch (_) {}
+  }
+
   return {
     ok: resp.ok,
     status: resp.status,
     bytes: body.length,
     departures: merge_variables.departure_count,
+    updated_at: merge_variables.updated_at,
+    detail,
   };
 }
 
 export default {
   // Cron-Trigger: nur im Berliner Zeitfenster pushen.
   async scheduled(event, env, ctx) {
+    const t = berlinClock();
     if (!inWindow()) {
-      console.log("Außerhalb Fenster (täglich 06:00–08:00 Berlin) – kein Push.");
+      console.log(`[${t}] Außerhalb Fenster (täglich 06:00–08:00 Berlin) – kein Push.`);
       return;
     }
     try {
       const r = await pushToTrmnl(env);
-      console.log("Push:", JSON.stringify(r));
+      console.log(`[${t}] Push ${r.ok ? "OK" : "FEHLER"}:`, JSON.stringify(r));
     } catch (e) {
-      console.error("Push fehlgeschlagen:", e.message);
+      console.error(`[${t}] Push fehlgeschlagen:`, e.message);
     }
   },
 
